@@ -15,3 +15,8 @@ Check [Grafana scripted dashboards documentation](http://docs.grafana.org/refere
 ### generic.js
 
 * http://grafana_url/dashboard/script/generic.js?host=hostname
+
+#### Parameters
+
+* host=hostname: Hostname to get stats from 'hostname'
+* debug: Enable debug mode. Check your javascript console to see debug messages
