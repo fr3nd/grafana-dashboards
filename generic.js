@@ -197,8 +197,16 @@ function get_df_panels(host, colors, default_panel) {
 }
 
 function get_interface_panels(host, colors, default_panel) {
-  var instances = run_query('SHOW TAG VALUES FROM "interface_rx" WITH KEY = "instance" WHERE host = \'' + host + '\'');
+  var instances;
+  var query_key = 'instance';
+  instances = run_query('SHOW TAG VALUES FROM "interface_rx" WITH KEY = "instance" WHERE host = \'' + host + '\'');
   var panels = [];
+
+  // In CollectD 4 interface name is stored in type_instance
+  if (typeof instances[0].values == 'undefined') {
+    instances = run_query('SHOW TAG VALUES FROM "interface_rx" WITH KEY = "type_instance" WHERE host = \'' + host + '\'');
+    query_key = 'type_instance';
+  }
 
   for (var x in instances[0].values){
     var interface_traffic_panel = {
@@ -217,12 +225,12 @@ function get_interface_panels(host, colors, default_panel) {
       ],
       'targets': [
         {
-          query: 'SELECT stddev(value) FROM "interface_rx" WHERE "host" = \'' + host + '\' AND "instance" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
+          query: 'SELECT stddev(value) FROM "interface_rx" WHERE "host" = \'' + host + '\' AND "' + query_key + '" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
           rawQuery: true,
           alias: 'Receive',
         },
         {
-          query: 'SELECT stddev(value) FROM "interface_tx" WHERE "host" = \'' + host + '\' AND "instance" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
+          query: 'SELECT stddev(value) FROM "interface_tx" WHERE "host" = \'' + host + '\' AND "' + query_key + '" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
           rawQuery: true,
           alias: 'Transmit',
         }
