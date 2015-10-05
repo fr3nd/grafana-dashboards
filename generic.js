@@ -219,7 +219,7 @@ function get_interface_panels(host, colors, default_panel) {
     }
 
     var interface_traffic_panel = {
-      'title': 'Interface traffic (' + instance_name + ') on ' + host,
+      'title': 'Interface traffic (' + instances[0].values[x][0] + ') on ' + host,
       'type': 'graph',
       'aliasColors': colors.interface,
       'seriesOverrides': [
