@@ -203,7 +203,7 @@ function get_interface_panels(host, colors, default_panel) {
   var panels = [];
 
   // In CollectD 4 interface name is stored in type_instance
-  if (typeof instances[0].values == 'undefined') {
+  if (typeof instances[0] == 'undefined') {
     instances = run_query('SHOW TAG VALUES FROM "interface_rx" WITH KEY = "type_instance" WHERE host = \'' + host + '\'');
     query_key = 'type_instance';
   }
