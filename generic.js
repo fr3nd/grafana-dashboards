@@ -200,7 +200,24 @@ function get_interface_panels(host, colors, default_panel) {
   var instances = run_query('SHOW TAG VALUES FROM "interface_rx" WITH KEY = "instance" WHERE host = \'' + host + '\'');
   var panels = [];
 
-  for (var x in instances[0].values){
+  var endloop = false;
+  var x = 0;
+  var instance_condition = '';
+  var instance_name = '';
+  do {
+    try {
+        instance_condition = ' AND "instance" = \'' + instances[0].values[x][0] + '\' ';
+        instance_name = instances[0].values[x][0];
+        if (typeof instances[0].values[x+1][0] == 'undefined') {
+          endloop = true;
+        }
+    }
+    catch(err) {
+        instance_condition = '';
+        instance_name = 'Unknown';
+        endloop = true;
+    }
+
     var interface_traffic_panel = {
       'title': 'Interface traffic (' + instances[0].values[x][0] + ') on ' + host,
       'type': 'graph',
@@ -217,12 +234,12 @@ function get_interface_panels(host, colors, default_panel) {
       ],
       'targets': [
         {
-          query: 'SELECT stddev(value) FROM "interface_rx" WHERE "host" = \'' + host + '\' AND "instance" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
+          query: 'SELECT stddev(value) FROM "interface_rx" WHERE "host" = \'' + host + '\'' + instance_condition + ' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
           rawQuery: true,
           alias: 'Receive',
         },
         {
-          query: 'SELECT stddev(value) FROM "interface_tx" WHERE "host" = \'' + host + '\' AND "instance" = \'' + instances[0].values[x][0] + '\' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
+          query: 'SELECT stddev(value) FROM "interface_tx" WHERE "host" = \'' + host + '\'' + instance_condition + ' AND "type" = \'if_octets\' AND $timeFilter GROUP BY time($interval)',
           rawQuery: true,
           alias: 'Transmit',
         }
@@ -230,7 +247,8 @@ function get_interface_panels(host, colors, default_panel) {
       ]
     };
     panels.push( $.extend({}, default_panel, interface_traffic_panel));
-  }
+    x++;
+  } while (!endloop);
 
   return panels;
 }
