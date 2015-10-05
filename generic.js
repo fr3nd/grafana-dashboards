@@ -92,6 +92,10 @@ function run_query(query) {
   request.open('GET', query_url, false);
   request.send(null);
   var obj = JSON.parse(request.responseText);
+  if (arg_debug) {
+      console.log('Query: ' + query);
+      console.log('Result: ' + request.responseText);
+  }
 
   for (var i = 0; i < obj.results[0].series.length; i++) {
       results.push(obj.results[0].series[i]);
