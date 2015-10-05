@@ -97,8 +97,10 @@ function run_query(query) {
       console.log('Result: ' + request.responseText);
   }
 
-  for (var i = 0; i < obj.results[0].series.length; i++) {
-      results.push(obj.results[0].series[i]);
+  if (typeof obj.results[0].series !== 'undefined') {
+    for (var i = 0; i < obj.results[0].series.length; i++) {
+        results.push(obj.results[0].series[i]);
+    }
   }
 
   return results.sort();
