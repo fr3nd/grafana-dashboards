@@ -148,6 +148,21 @@ function get_memory_panels(host, colores, default_panel) {
       alias: 'Cached',
     },
     {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'buffered\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'Buffered',
+    },
+    {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'slab_recl\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'slab_recl',
+    },
+    {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'slab_unrecl\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'slab_unrecl',
+    },
+    {
       query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'free\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
       rawQuery: true,
       alias: 'Free',
