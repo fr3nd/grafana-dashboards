@@ -53,9 +53,12 @@ var colors = {
     'IO wait': '#58140C',
   },
   'memory': {
-    'Free': '#202020',
-    'Used': '#58140C',
-    'Cached': '#447EBC',
+    'Free': '#0A437C',
+    'Used': '#BF1B00',
+    'Cached': '#890F02',
+    'Buffered': '#58140C',
+    'slab_recl': '#EF843C',
+    'slab_unrecl': '#F9BA8F',
   },
   'mysql': {
     'Queries': '#6ED0E0',
