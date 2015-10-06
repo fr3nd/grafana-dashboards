@@ -52,6 +52,11 @@ var colors = {
     'System': '#890F02',
     'IO wait': '#58140C',
   },
+  'memory': {
+    'Free': '#202020',
+    'Used': '#58140C',
+    'Cached': '#447EBC',
+  },
   'mysql': {
     'Queries': '#6ED0E0',
   },
@@ -122,6 +127,35 @@ function get_plugins(host) {
 
   return plugins;
 
+}
+
+function get_memory_panels(host, colores, default_panel) {
+  var panels = [];
+  var memory_panel= {
+    'title': 'Memory on ' + host,
+    'type': 'graph',
+    'stack': true,
+    'aliasColors': colors.memory,
+    'targets': [
+    {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'used\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'Used',
+    },
+    {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'cached\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'Cached',
+    },
+    {
+      query: 'SELECT mean(value) FROM "memory_value" WHERE "type_instance" = \'free\' AND  "host" = \'' + host + '\' AND $timeFilter GROUP BY time($interval)',
+      rawQuery: true,
+      alias: 'Free',
+    },
+    ]
+  };
+
+  return [ $.extend({}, default_panel, memory_panel) ];
 }
 
 function get_load_panels(host, colors, default_panel) {
@@ -528,6 +562,9 @@ return function(callback) {
           break;
         case 'cpu':
           row.panels = get_cpu_panels(arg_host, colors, panel);
+          break;
+        case 'memory':
+          row.panels = get_memory_panels(arg_host, colors, panel);
           break;
         case 'mysql':
           row.panels = get_mysql_panels(arg_host, colors, panel);
