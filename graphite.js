@@ -269,9 +269,9 @@ function panel_collectd_swap(instance,default_panel){
     grid: {max: null, min: 0, leftMin: 0},
     y_formats: ["bytes"],
     targets: [
-      { "target": "alias(" + instance + ".swap.swap.used, 'Used')" },
-      { "target": "alias(" + instance + ".swap.swap.cached, 'Cached')" },
-      { "target": "alias(" + instance + ".swap.swap.free, 'Free')" },
+      { "target": "alias(" + instance + ".swap.swap-used, 'Used')" },
+      { "target": "alias(" + instance + ".swap.swap-cached, 'Cached')" },
+      { "target": "alias(" + instance + ".swap.swap-free, 'Free')" },
     ]
   };
 
