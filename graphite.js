@@ -276,6 +276,7 @@ function panel_collectd_swap(instance,default_panel){
   };
 
   panels.push( $.extend({}, default_panel, panel_swap_size));
+  return panels;
 
 }
 
