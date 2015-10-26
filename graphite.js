@@ -34,6 +34,12 @@ if(!_.isUndefined(ARGS.datasource_url)) {
   arg_datasource_url = ARGS.datasource_url;
 }
 
+if(!_.isUndefined(ARGS.debug)) {
+  arg_debug = true;
+} else {
+  arg_debug = false;
+}
+
 var default_row = {
   'title': '',
   'showTitle': true,
@@ -93,6 +99,10 @@ function find_filter_values(query){
   req.open('GET', search_url, false);
   req.send(null);
   var obj = JSON.parse(req.responseText);
+  if (arg_debug) {
+      console.log('Query: ' + query);
+      console.log('Result: ' + request.responseText);
+  }
   for(var key in obj) {
     if (obj[key].hasOwnProperty("text")) {
       res.push(obj[key].text);
@@ -109,6 +119,10 @@ function expand_filter_values(query){
   req.open('GET', search_url, false);
   req.send(null);
   var obj = JSON.parse(req.responseText);
+  if (arg_debug) {
+      console.log('Query: ' + query);
+      console.log('Result: ' + request.responseText);
+  }
   if (obj.hasOwnProperty('results')) {
     return obj.results;
   } else {
