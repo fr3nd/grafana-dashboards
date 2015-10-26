@@ -73,7 +73,7 @@ function find_filter_values(query){
   var obj = JSON.parse(req.responseText);
   if (arg_debug) {
       console.log('Query: ' + query);
-      console.log('Result: ' + request.responseText);
+      console.log('Result: ' + req.responseText);
   }
   for(var key in obj) {
     if (obj[key].hasOwnProperty("text")) {
@@ -93,7 +93,7 @@ function expand_filter_values(query){
   var obj = JSON.parse(req.responseText);
   if (arg_debug) {
       console.log('Query: ' + query);
-      console.log('Result: ' + request.responseText);
+      console.log('Result: ' + req.responseText);
   }
   if (obj.hasOwnProperty('results')) {
     return obj.results;
