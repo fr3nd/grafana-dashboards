@@ -335,7 +335,6 @@ function panel_collectd_interface(instance,default_panel){
   return panels;
 }
 
-
 function panel_collectd_df(instance,default_panel){
   var vols = expand_filter_values(instance + ".df*");
   var panels = [];
@@ -490,6 +489,9 @@ return function(callback) {
           break;
         case 'interface':
           row.panels = panel_collectd_interface(instance,default_panel);
+          break;
+        case 'cpu':
+          row.panels = panel_collectd_cpu(instance,default_panel);
           break;
         default:
           row.collapse = true;
