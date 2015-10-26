@@ -13,7 +13,7 @@
 var window, document, ARGS, $, jQuery, moment, kbn;
 
 // use defaults for URL arguments
-var arg_i    = 'default';
+var arg_i    = '*';
 var arg_span = 4;
 var arg_from = '2h';
 var arg_datasource_url = '/api/datasources/proxy/2';
@@ -164,16 +164,24 @@ function panel_collectd_loadavg(title,prefix){
   var idx = len(prefix);
   return {
     title: title,
-      type: 'graphite',
+      type: 'graph',
       span: arg_span,
       y_formats: ["none"],
-      grid: {max: null, min: 0},
+      grid: { max: null, min: 0 },
       lines: true,
       fill: 0,
       linewidth: 2,
       nullPointMode: "null",
+      stack: true,
+      aliasColors: {
+        '15 min': '#CCA300',
+        '5 min': '#C15C17',
+        '1 min': '#BF1B00',
+      },
       targets: [
-      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.midterm,'10min')," +(idx+4)+ ")" },
+      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.longterm,'15 min')," +(idx+4)+ ")" },
+      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.midterm,'10 min')," +(idx+4)+ ")" },
+      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.shortterm,'5 min')," +(idx+4)+ ")" },
       ]
   };
 }
@@ -338,7 +346,7 @@ function row_cpu_memory(title,prefix){
       panels: [
         panel_collectd_cpu('CPU, %',prefix),
       panel_collectd_memory('Memory',prefix),
-      panel_collectd_loadavg('Load avg, 10min',prefix)
+      panel_collectd_loadavg('Load average',prefix)
         ]
   };
 }
