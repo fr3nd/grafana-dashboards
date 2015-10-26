@@ -227,7 +227,7 @@ function panel_collectd_other(title){
       content: 'This CollectD plugin has not a panel yet',
   };
 
-  return panel_other;
+  return [ panel_other ];
 }
 
 function panel_collectd_load(title,instance,default_panel){
