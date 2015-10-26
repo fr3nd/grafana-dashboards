@@ -219,6 +219,16 @@ function panel_collectd_memory(title,prefix){
   };
 }
 
+function panel_collectd_other(title){
+  var panel_other = {
+      title: title,
+      type: 'text',
+      span: 12,
+      content: 'This CollectD plugin has not a panel yet',
+  };
+
+  return panel_other;
+}
 
 function panel_collectd_load(title,instance,default_panel){
   var panel_load = {
@@ -448,11 +458,6 @@ return function(callback) {
   dashboard.pulldowns = pulldowns;
   dashboard.services.filter = dashboard_filter;
 
-
-  // custom dashboard rows (appended to the default dashboard rows)
-
-  var optional_rows = [];
-
   $.ajax({
     method: 'GET',
     url: '/'
@@ -460,18 +465,23 @@ return function(callback) {
   .done(function(result) {
 
     plugins = get_plugins(instance);
-    console.log(plugins);
-
-    // construct dashboard rows
-
-    dashboard.rows.push(
-      row_generic('Load Average',
-        instance,
-        default_row,
-        panel_collectd_load('Load average',instance,default_panel)
-      )
-    );
-
+    if (arg_debug) {
+      console.log("Plugins:" + plugins);
+    }
+    for (var x in plugins){
+      var row = JSON.parse(JSON.stringify(default_row));
+      row.title = plugins[x];
+      switch (plugins[x]) {
+        case 'load':
+          row.panels = panel_collectd_load('Load average',instance,default_panel);
+          break;
+        default:
+          row.collapse = true;
+          row.panels = panel_collectd_other(plugins[x]);
+          break;
+      }
+      dashboard.rows.push(row);
+    }
 
     // when dashboard is composed call the callback
     // function and pass the dashboard
