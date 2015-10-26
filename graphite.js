@@ -230,9 +230,9 @@ function panel_collectd_other(title){
   return [ panel_other ];
 }
 
-function panel_collectd_load(title,instance,default_panel){
+function panel_collectd_load(instance,default_panel){
   var panel_load = {
-    title: title,
+    title: "Load Average",
       type: 'graph',
       y_formats: ["none"],
       grid: { max: null, min: 0 },
@@ -337,7 +337,30 @@ function panel_collectd_network_packets(title,prefix,intrf){
   };
 }
 
-function panel_collectd_df(title,prefix,vol){
+function panel_collectd_df(instance,default_panel){
+  var vols = expand_filter_values(instance + "df*");
+
+  for (var x in vols){
+    var name = vols[x].split(".")[1].replace("df-", "");
+    var panel_df = {
+      title: "Free space (" + name + ") on " + instance,
+      type: 'graph',
+      y_formats: ["bytes"],
+      grid: {max: null, min: 0, leftMin: 0},
+      stack: true,
+      linewidth: 0,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
+      ],
+      aliasColors: {
+        "Used": "#BF1B00",
+        "Free": "#052B51",
+        "Reserved": "#AEA2E0",
+      }
+    };
+  }
+
   vol = (typeof vol === "undefined") ? 'root' : vol;
   var idx = len(prefix);
   return {
@@ -473,7 +496,10 @@ return function(callback) {
       row.title = plugins[x];
       switch (plugins[x]) {
         case 'load':
-          row.panels = panel_collectd_load('Load average',instance,default_panel);
+          row.panels = panel_collectd_load(instance,default_panel);
+          break;
+        case 'df':
+          row.panels = panel_collectd_df(instance,default_panel);
           break;
         default:
           row.collapse = true;
