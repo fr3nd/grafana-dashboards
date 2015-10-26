@@ -541,11 +541,6 @@ return function(callback) {
       )
     );
 
-    // custom rows
-    for (var i in optional_rows){
-      dashboard.rows.push(optional_rows[i]);
-    }
-
     // when dashboard is composed call the callback
     // function and pass the dashboard
     callback(dashboard);
