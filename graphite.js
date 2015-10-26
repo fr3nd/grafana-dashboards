@@ -204,7 +204,7 @@ function panel_collectd_memory(title,prefix){
 
 function panel_collectd_loadavg(title,prefix,default_panel){
   var idx = len(prefix);
-  var panel_collectd_loadavg = {
+  var panel_loadavg = {
     title: title,
       type: 'graph',
       span: arg_span,
@@ -227,7 +227,7 @@ function panel_collectd_loadavg(title,prefix,default_panel){
       ]
   };
 
-  return [ $.extend({}, default_panel, panel_collectd_loadavg) ];
+  return [ $.extend({}, default_panel, panel_loadavg) ];
 
 }
 
