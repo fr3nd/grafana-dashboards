@@ -134,6 +134,93 @@ function panel_collectd_cpu(title,prefix){
   };
 }
 
+function panel_collectd_memory(title,prefix){
+  var idx = len(prefix);
+  return {
+    title: title,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["bytes"],
+      grid: {max: null, min: 0},
+      lines: true,
+      fill: 1,
+      linewidth: 1,
+      stack: true,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].memory.memory.{used,free,cached,buffered},'15min')," +(idx+4)+ ")" },
+      ],
+      aliasColors: {
+        "free": "#629E51",
+        "used": "#1F78C1",
+        "cached": "#EF843C",
+        "buffered": "#CCA300"
+      }
+  };
+}
+
+
+function panel_collectd_loadavg(title,prefix){
+  var idx = len(prefix);
+  return {
+    title: title,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["none"],
+      grid: {max: null, min: 0},
+      lines: true,
+      fill: 0,
+      linewidth: 2,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.midterm,'10min')," +(idx+4)+ ")" },
+      ]
+  };
+}
+
+function panel_collectd_swap_size(title,prefix){
+  var idx = len(prefix);
+  return {
+    title: title,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["bytes"],
+      grid: {max: null, min: 0, leftMin: 0},
+      lines: true,
+      fill: 1,
+      linewidth: 1,
+      stack: true,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(" + prefix + "[[instance]].swap.swap.{free,used,cached}," +(idx+3)+ ")" },
+      ],
+      aliasColors: {
+        "used": "#1F78C1",
+        "cached": "#EAB839",
+        "free": "#508642"
+      }
+  };
+}
+
+function panel_collectd_swap_io(title,prefix){
+  var idx = len(prefix);
+  return {
+    title: title,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["bytes"],
+      grid: {max: null, min: 0},
+      lines: true,
+      fill: 1,
+      linewidth: 2,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(movingMedian(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap_io.in,10),0),'5min')," +(idx+3)+ ")" },
+      { "target": "aliasByNode(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap.io-out,10),0),-1),'5min')," +(idx+3)+ ")" },
+      ]
+  };
+}
+
 function panel_collectd_network_octets(title,prefix,intrf){
   intrf = (typeof intrf === "undefined") ? 'interface-eth0' : intrf;
   var idx = len(prefix);
@@ -155,6 +242,94 @@ function panel_collectd_network_octets(title,prefix,intrf){
 }
 
 
+function panel_collectd_network_packets(title,prefix,intrf){
+  intrf = (typeof intrf === "undefined") ? 'eth0' : intrf;
+  var idx = len(prefix);
+  return {
+    title: title + ', ' + intrf,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["bytes"],
+      grid: {max: null, min: null},
+      lines: true,
+      fill: 1,
+      linewidth: 2,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.rx,10),'5min')," +(idx+4)+ ")" },
+      { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.tx,10),-1),'5min')," +(idx+4)+ ")" }
+    ]
+  };
+}
+
+function panel_collectd_df(title,prefix,vol){
+  vol = (typeof vol === "undefined") ? 'root' : vol;
+  var idx = len(prefix);
+  return {
+    title: title + ', ' + vol,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["bytes"],
+      grid: {max: null, min: 0, leftMin: 0},
+      lines: true,
+      fill: 1,
+      linewidth: 2,
+      stack: true,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
+      ],
+      aliasColors: {
+        "used": "#447EBC",
+        "free": "#508642",
+        "reserved": "#EAB839"
+      }
+  };
+}
+
+function panel_collectd_disk(title,prefix,vol){
+  vol = (typeof vol === "undefined") ? 'sda' : vol;
+  var idx = len(prefix);
+  return {
+    title: title + ', ' + vol,
+      type: 'graphite',
+      span: arg_span,
+      y_formats: ["none"],
+      grid: {max: null, min: null},
+      lines: true,
+      fill: 1,
+      linewidth: 2,
+      nullPointMode: "null",
+      targets: [
+      { "target": "aliasByNode(nonNegativeDerivative(" + prefix + "[[instance]].disk." + vol + ".disk_ops.write,10)," +(idx+2)+ "," +(idx+4)+ ")" },
+      { "target": "aliasByNode(scale(nonNegativeDerivative(" + prefix + "[[instance]].disk." + vol + ".disk_ops.read,10),-1)," +(idx+2)+ "," +(idx+4)+ ")" }
+    ],
+      aliasColors: {
+        "write": "#447EBC",
+        "read": "#508642",
+      }
+  };
+}
+
+
+function row_delimiter(title){
+  return {
+    title: "_____ " + title,
+    height: "20px",
+    collapse: false,
+    editable: false,
+    collapsable: false,
+    panels: [{
+      title: title,
+      editable: false,
+      span: 12,
+      type: "text",
+      mode: "text"
+    }]
+  };
+}
+
+
 function row_cpu_memory(title,prefix){
   return {
     title: title,
@@ -168,6 +343,18 @@ function row_cpu_memory(title,prefix){
   };
 }
 
+
+function row_swap(title,prefix){
+  return {
+    title: title,
+    height: '250px',
+    collapse: true,
+    panels: [
+      panel_collectd_swap_size('Swap size',prefix),
+    panel_collectd_swap_io('Swap IO',prefix),
+    ]
+  };
+}
 
 function row_network(title,prefix,filter){
   var interfaces = find_filter_values(filter + '.interface-*');
@@ -186,6 +373,34 @@ function row_network(title,prefix,filter){
   };
 }
 
+
+function row_disk_space(title,prefix,filter){
+  var volumes = find_filter_values(filter + '.df.*');
+  panels_disk_space = [];
+  for (var i in volumes) {
+    panels_disk_space.push(panel_collectd_df('disk space',prefix,volumes[i]));
+  }
+  return {
+    title: title,
+      height: '250px',
+      collapse: true,
+      panels: panels_disk_space
+  };
+}
+
+function row_disk_usage(title,prefix,filter){
+  var volumes = find_filter_values(filter + '.disk.*');
+  var panels_disk_usage = [];
+  for (var i in volumes) {
+    panels_disk_usage.push(panel_collectd_disk('disk ops read/write',prefix,volumes[i]));
+  }
+  return {
+    title: title,
+      height: '250px',
+      collapse: true,
+      panels: panels_disk_usage
+  };
+}
 
 return function(callback) {
 
@@ -228,38 +443,38 @@ return function(callback) {
     services : {}
   };
   dashboard.title = arg_i;
-      dashboard.editable = true;
-      dashboard.pulldowns = pulldowns;
-      dashboard.services.filter = dashboard_filter;
+  dashboard.editable = true;
+  dashboard.pulldowns = pulldowns;
+  dashboard.services.filter = dashboard_filter;
 
 
-      // custom dashboard rows (appended to the default dashboard rows)
+  // custom dashboard rows (appended to the default dashboard rows)
 
-      var optional_rows = [];
+  var optional_rows = [];
 
-      $.ajax({
-        method: 'GET',
-        url: '/'
-      })
-      .done(function(result) {
+  $.ajax({
+    method: 'GET',
+    url: '/'
+  })
+  .done(function(result) {
 
-        // construct dashboard rows
+    // construct dashboard rows
 
-        dashboard.rows.push(
-          row_cpu_memory('cpu, memory',prefix),
-          row_swap('swap',prefix),
-          row_network('network',prefix,arg_filter),
-          row_disk_space('disk space',prefix,arg_filter),
-          row_disk_usage('disk ops',prefix,arg_filter)
-          );
+    dashboard.rows.push(
+      row_cpu_memory('cpu, memory',prefix),
+      row_swap('swap',prefix),
+      row_network('network',prefix,arg_filter),
+      row_disk_space('disk space',prefix,arg_filter),
+      row_disk_usage('disk ops',prefix,arg_filter)
+      );
 
-        // custom rows
-        for (var i in optional_rows){
-          dashboard.rows.push(optional_rows[i]);
-        }
+    // custom rows
+    for (var i in optional_rows){
+      dashboard.rows.push(optional_rows[i]);
+    }
 
-        // when dashboard is composed call the callback
-        // function and pass the dashboard
-        callback(dashboard);
-      });
+    // when dashboard is composed call the callback
+    // function and pass the dashboard
+    callback(dashboard);
+  });
 };
