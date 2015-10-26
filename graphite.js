@@ -338,7 +338,7 @@ function panel_collectd_network_packets(title,prefix,intrf){
 }
 
 function panel_collectd_df(instance,default_panel){
-  var vols = expand_filter_values(instance + "df*");
+  var vols = expand_filter_values(instance + ".df*");
   var panels = [];
 
   for (var x in vols){
