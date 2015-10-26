@@ -459,6 +459,9 @@ return function(callback) {
   })
   .done(function(result) {
 
+    plugins = get_plugins(instance);
+    console.log(plugins);
+
     // construct dashboard rows
 
     dashboard.rows.push(
@@ -469,7 +472,6 @@ return function(callback) {
       )
     );
 
-    console.log(get_plugins(instance));
 
     // when dashboard is composed call the callback
     // function and pass the dashboard
