@@ -469,6 +469,8 @@ return function(callback) {
       )
     );
 
+    console.log(get_plugins(instance));
+
     // when dashboard is composed call the callback
     // function and pass the dashboard
     callback(dashboard);
