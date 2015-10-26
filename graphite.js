@@ -308,7 +308,7 @@ function panel_collectd_interface(instance,default_panel){
     var name = interfaces[x].split(".")[1].replace("interface-", "");
 
     var panel_interface_octets = {
-      title: 'Interface traffic (' + name + ') on ' + instance,
+      title: 'Interface traffic in octets (' + name + ') on ' + instance,
       type: 'graph',
       grid: {max: null, min: null},
       aliasColors: {
