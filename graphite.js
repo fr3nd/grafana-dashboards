@@ -210,10 +210,6 @@ function panel_collectd_loadavg(title,prefix,default_panel){
       span: arg_span,
       y_formats: ["none"],
       grid: { max: null, min: 0 },
-      lines: true,
-      fill: 0,
-      linewidth: 2,
-      nullPointMode: "null",
       stack: true,
       aliasColors: {
         "15 min": "#CCA300",
