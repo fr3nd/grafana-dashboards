@@ -300,6 +300,42 @@ function panel_collectd_swap(instance,default_panel){
 
 }
 
+function panel_collectd_interface(instance,default_panel){
+  var interfaces = expand_filter_values(instance + ".interface*");
+  var panels = [];
+
+  for (var x in interfaces){
+    var name = interfaces[x].split(".")[1].replace("interface-", "");
+
+    var panel_interface_octets = {
+      title: 'Interface traffic (' + instances[0].values[x][0] + ') on ' + host,
+      type: 'graph',
+      grid: {max: null, min: null},
+      aliasColors: {
+        'Receive': '#0A437C',
+        'Transmit': '#629E51',
+      },
+      seriesOverrides: [
+        {
+          alias: 'Receive',
+          transform: 'negative-Y',
+        },
+      ],
+      y_formats: ["bytes"],
+      targets: [
+        { "target": "alias(" + interfaces[x] + ".if_octets-rx, 'Receive')" },
+        { "target": "alias(" + interfaces[x] + ".if_octets-tx, 'Transmit')" },
+      ]
+
+    };
+    panels.push( $.extend({}, default_panel, panel_interface_octets));
+
+  }
+
+  return panels;
+}
+
+
 function panel_collectd_network_octets(title,prefix,intrf){
   intrf = (typeof intrf === "undefined") ? 'interface-eth0' : intrf;
   var idx = len(prefix);
@@ -492,6 +528,9 @@ return function(callback) {
           break;
         case 'swap':
           row.panels = panel_collectd_swap(instance,default_panel);
+          break;
+        case 'interface':
+          row.panels = panel_collectd_interface(instance,default_panel);
           break;
         default:
           row.collapse = true;
