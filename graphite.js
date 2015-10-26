@@ -352,9 +352,9 @@ function panel_collectd_df(instance,default_panel){
       linewidth: 0,
       nullPointMode: "null",
       targets: [
-      { "target": "alias(" + vols[x] + ".df_complex.used, 'Used')" },
-      { "target": "alias(" + vols[x] + ".df_complex.free, 'Free')" },
-      { "target": "alias(" + vols[x] + ".df_complex.reserved, 'Reserved')" },
+      { "target": "alias(" + vols[x] + ".df_complex-used, 'Used')" },
+      { "target": "alias(" + vols[x] + ".df_complex-free, 'Free')" },
+      { "target": "alias(" + vols[x] + ".df_complex-reserved, 'Reserved')" },
       ],
       aliasColors: {
         "Used": "#BF1B00",
