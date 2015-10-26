@@ -202,8 +202,7 @@ function panel_collectd_memory(title,prefix){
 }
 
 
-function panel_collectd_loadavg(title,prefix,default_panel){
-  var idx = len(prefix);
+function panel_collectd_loadavg(title,instance,default_panel){
   var panel_loadavg = {
     title: title,
       type: 'graph',
@@ -217,13 +216,13 @@ function panel_collectd_loadavg(title,prefix,default_panel){
         "1 min": "#BF1B00",
       },
       targets: [
-      { "target": "alias(" + prefix + "[[instance]].load.load.longterm, '15 min')" },
-      { "target": "alias(" + prefix + "[[instance]].load.load.midterm, '5 min')" },
-      { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '1 min')" },
+      { "target": "alias(" + instance + ".load.load.longterm, '15 min')" },
+      { "target": "alias(" + instance + ".load.load.midterm, '5 min')" },
+      { "target": "alias(" + instance + ".load.load.shortterm, '1 min')" },
       ]
   };
 
-  return $.extend({}, default_panel, panel_loadavg);
+  return [ $.extend({}, default_panel, panel_loadavg) ];
 
 }
 
@@ -378,6 +377,17 @@ function row_delimiter(title){
   };
 }
 
+function row_generic(title,instance,default_row,panels){
+
+  var generic_row = {
+    title: title,
+    panels: panels,
+  };
+
+  return $.extend({}, default_row, generic_row);
+
+}
+
 
 function row_cpu_memory(title,prefix,default_panel){
   return {
@@ -458,17 +468,14 @@ return function(callback) {
 
   var prefix = '';
 
-  var arg_filter = prefix + arg_i;
+  var instance = prefix + arg_i;
 
   // set filter
   var dashboard_filter = {
     time: {
       from: "now-" + arg_from,
       to: "now"
-    },
-    list: [
-      get_filter_object("instance",arg_filter,false)
-      ]
+    }
   };
 
   // define pulldowns
@@ -510,11 +517,7 @@ return function(callback) {
     // construct dashboard rows
 
     dashboard.rows.push(
-      row_cpu_memory('cpu, memory',prefix,default_panel),
-      row_swap('swap',prefix),
-      row_network('network',prefix,arg_filter),
-      row_disk_space('disk space',prefix,arg_filter),
-      row_disk_usage('disk ops',prefix,arg_filter)
+      row_generic('Load Average', instance,default_row,panel_collectd_loadavg('Load average',prefix,default_panel))
       );
 
     // custom rows
