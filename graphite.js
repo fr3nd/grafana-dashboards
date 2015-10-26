@@ -361,28 +361,8 @@ function panel_collectd_df(instance,default_panel){
     };
   }
 
-  vol = (typeof vol === "undefined") ? 'root' : vol;
-  var idx = len(prefix);
-  return {
-    title: title + ', ' + vol,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: 0, leftMin: 0},
-      lines: true,
-      fill: 1,
-      linewidth: 2,
-      stack: true,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
-      ],
-      aliasColors: {
-        "used": "#447EBC",
-        "free": "#508642",
-        "reserved": "#EAB839"
-      }
-  };
+  return [ $.extend({}, default_panel, panel_df) ];
+
 }
 
 function panel_collectd_disk(title,prefix,vol){
