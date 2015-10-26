@@ -154,44 +154,35 @@ function len(prefix){
 }
 
 
-function panel_collectd_cpu(title,prefix){
-  var idx = len(prefix);
-  return {
-    title: title,
-      type: 'graphite',
-      span: arg_span,
-      renderer: "flot",
-      y_formats: ["none"],
-      grid: {max: null, min: 0},
-      lines: true,
-      fill: 1,
-      linewidth: 1,
-      stack: true,
-      legend: {show: true},
-      percentage: true,
-      nullPointMode: "null",
-      tooltip: {
-        value_type: "individual",
-        query_as_alias: true
-      },
-      targets: [
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-user,0)),'user')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-system,0)),'system')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-idle,0)),'idle')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-wait,0)),'wait')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-steal,0)),'steal')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-nice,0)),'nice')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-softirq,0)),'irq')" },
-      { "target": "alias(sumSeries(nonNegativeDerivative(" + prefix + "[[instance]].cpu-*.cpu-interrupt,0)),'intrpt')" },
-      ],
-      aliasColors: {
-        "user": "#508642",
-        "system": "#EAB839",
-        "wait": "#890F02",
-        "steal": "#E24D42",
-        "idle": "#6ED0E0"
-      }
+function panel_collectd_cpu(instance,default_panel){
+  var panel_cpu = {
+    title: 'CPU usage on ' + instance,
+    type: 'graph',
+    aliasColors: {
+      'Idle': '#202020',
+      'SoftIRQ': '#EAB839',
+      'IRQ': '#E5AC0E',
+      'User': '#BA43A9',
+      'Nice': '#447EBC',
+      'System': '#890F02',
+      'IO wait': '#58140C',
+    },
+    stack: true,
+    y_formats: ["none"],
+    percentage: true,
+    linewidth: 1,
+    targets: [
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-user), 'User')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-system), 'System')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-idle), 'Idle')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-wait), 'IO wait')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-steal), 'Steal')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-nice), 'Nice')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-softirq), 'SoftIRQ')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-interrupt), 'IRQ')"},
+    ]
   };
+
 }
 
 function panel_collectd_memory(title,prefix){
