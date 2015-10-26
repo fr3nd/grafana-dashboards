@@ -253,6 +253,33 @@ function panel_collectd_load(instance,default_panel){
 
 }
 
+function panel_collectd_swap(instance,default_panel){
+  var panels = [];
+  var swap_panel_size = {
+    title: 'Swap utilization on ' + instance,
+    type: 'graph',
+    stack: true,
+    aliasColors: {
+      'Used': '#BF1B00',
+      'Free': '#0A437C',
+      'Cached': '#58140C',
+      'Out': '#5195CE',
+      'In': '#629E51',
+    },
+    grid: {max: null, min: 0, leftMin: 0},
+    y_formats: ["bytes"],
+    targets: [
+      { "target": "alias(" + instance + ".swap.swap.used, 'Used')" },
+      { "target": "alias(" + instance + ".swap.swap.cached, 'Cached')" },
+      { "target": "alias(" + instance + ".swap.swap.free, 'Free')" },
+    ]
+  };
+
+
+  panels.push( $.extend({}, default_panel, panel_swap_size));
+
+}
+
 function panel_collectd_swap_size(title,prefix){
   var idx = len(prefix);
   return {
@@ -485,6 +512,9 @@ return function(callback) {
           break;
         case 'df':
           row.panels = panel_collectd_df(instance,default_panel);
+          break;
+        case 'swap':
+          row.panels = panel_collectd_swap(instance,default_panel);
           break;
         default:
           row.collapse = true;
