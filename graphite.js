@@ -206,7 +206,6 @@ function panel_collectd_loadavg(title,instance,default_panel){
   var panel_loadavg = {
     title: title,
       type: 'graph',
-      span: arg_span,
       y_formats: ["none"],
       grid: { max: null, min: 0 },
       stack: true,
