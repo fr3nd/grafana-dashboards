@@ -98,7 +98,7 @@ function get_plugins(instance) {
   var plugins = [];
 
   for (var i = 0; i < series.length; i++) {
-    plugin = series[i].split(".")[0].split("_")[0];
+    plugin = series[i].split(".")[1].split("_")[0];
     if (plugins.indexOf(plugin) == -1) {
       plugins.push(plugin);
     }
