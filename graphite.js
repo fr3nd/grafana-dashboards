@@ -336,47 +336,6 @@ function panel_collectd_interface(instance,default_panel){
 }
 
 
-function panel_collectd_network_octets(title,prefix,intrf){
-  intrf = (typeof intrf === "undefined") ? 'interface-eth0' : intrf;
-  var idx = len(prefix);
-  return {
-    title: title + ', ' + intrf,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: null},
-      lines: true,
-      fill: 1,
-      linewidth: 2,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(movingMedian(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]]." + intrf + ".if_octets.rx,10),0),'5min')," +(idx+4)+ ")" },
-      { "target": "aliasByNode(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]]." + intrf + ".if_octets.tx,10),0),-1),'5min')," +(idx+4)+ ")" }
-    ]
-  };
-}
-
-
-function panel_collectd_network_packets(title,prefix,intrf){
-  intrf = (typeof intrf === "undefined") ? 'eth0' : intrf;
-  var idx = len(prefix);
-  return {
-    title: title + ', ' + intrf,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: null},
-      lines: true,
-      fill: 1,
-      linewidth: 2,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.rx,10),'5min')," +(idx+4)+ ")" },
-      { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.tx,10),-1),'5min')," +(idx+4)+ ")" }
-    ]
-  };
-}
-
 function panel_collectd_df(instance,default_panel){
   var vols = expand_filter_values(instance + ".df*");
   var panels = [];
