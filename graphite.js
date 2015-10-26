@@ -34,40 +34,6 @@ if(!_.isUndefined(ARGS.datasource_url)) {
   arg_datasource_url = ARGS.datasource_url;
 }
 
-if(!_.isUndefined(ARGS.debug)) {
-  arg_debug = true;
-} else {
-  arg_debug = false;
-}
-
-var default_row = {
-  'title': '',
-  'showTitle': true,
-  'height': '300px',
-  'collapse': false,
-  'panels': [],
-};
-
-var default_panel = {
-  'title': '',
-  'span': 12,
-  'fill': 8,
-  'linewidth': 1,
-  'interval': '>30s',
-  'legend': {
-    'show': true,
-    'values': true,
-    'min': true,
-    'max': true,
-    'current': true,
-    'total': false,
-    'avg': true,
-    'rightSide': false,
-    'alignAsTable': false,
-  },
-  'targets': [],
-};
-
 // return dashboard filter_list
 // optionally include 'All'
 function get_filter_object(name,query,show_all){
@@ -202,9 +168,9 @@ function panel_collectd_memory(title,prefix){
 }
 
 
-function panel_collectd_loadavg(title,prefix, default_panel){
+function panel_collectd_loadavg(title,prefix){
   var idx = len(prefix);
-  var load_panel = {
+  return {
     title: title,
       type: 'graph',
       span: arg_span,
@@ -226,8 +192,6 @@ function panel_collectd_loadavg(title,prefix, default_panel){
       { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '1 min')" },
       ]
   };
-
-  return [ $.extend({}, default_panel, load_panel) ];
 }
 
 function panel_collectd_swap_size(title,prefix){
@@ -382,7 +346,7 @@ function row_delimiter(title){
 }
 
 
-function row_cpu_memory(title,prefix, default_panel){
+function row_cpu_memory(title,prefix){
   return {
     title: title,
       height: '250px',
@@ -390,7 +354,7 @@ function row_cpu_memory(title,prefix, default_panel){
       panels: [
         panel_collectd_cpu('CPU, %',prefix),
       panel_collectd_memory('Memory',prefix),
-      panel_collectd_loadavg('Load average',prefix, default_panel)
+      panel_collectd_loadavg('Load average',prefix)
         ]
   };
 }
@@ -513,7 +477,7 @@ return function(callback) {
     // construct dashboard rows
 
     dashboard.rows.push(
-      row_cpu_memory('cpu, memory',prefix, default_panel),
+      row_cpu_memory('cpu, memory',prefix),
       row_swap('swap',prefix),
       row_network('network',prefix,arg_filter),
       row_disk_space('disk space',prefix,arg_filter),
