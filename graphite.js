@@ -179,18 +179,9 @@ function panel_collectd_loadavg(title,prefix){
         "1 min": "#BF1B00",
       },
       targets: [
-      {
-        "target": prefix + "[[instance]].load.load.longterm",
-        "alias": "15 min",
-      },
-      {
-        "target": prefix + "[[instance]].load.load.midterm",
-        "alias": "10 min",
-      },
-      {
-        "target": prefix + "[[instance]].load.load.shortterm",
-        "alias": "5 min",
-      },
+      { "target": "alias(" + prefix + "[[instance]].load.load.longterm, '15min')" },
+      { "target": "alias(" + prefix + "[[instance]].load.load.midterm, '10min')"" },
+      { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '5min')"" },
       ]
   };
 }
