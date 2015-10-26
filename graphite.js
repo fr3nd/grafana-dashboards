@@ -516,7 +516,10 @@ return function(callback) {
     // construct dashboard rows
 
     dashboard.rows.push(
-      row_generic('Load Average', instance,default_row,panel_collectd_loadavg('Load average',prefix,default_panel))
+      row_generic('Load Average',
+        instance,
+        default_row,
+        panel_collectd_loadavg('Load average',instance,default_panel))
       );
 
     // custom rows
