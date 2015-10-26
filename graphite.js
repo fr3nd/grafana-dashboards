@@ -180,8 +180,8 @@ function panel_collectd_loadavg(title,prefix){
       },
       targets: [
       { "target": "alias(" + prefix + "[[instance]].load.load.longterm, '15min')" },
-      { "target": "alias(" + prefix + "[[instance]].load.load.midterm, '10min')"" },
-      { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '5min')"" },
+      { "target": "alias(" + prefix + "[[instance]].load.load.midterm, '10min')" },
+      { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '5min')" },
       ]
   };
 }
