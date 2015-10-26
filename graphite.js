@@ -263,8 +263,6 @@ function panel_collectd_swap(instance,default_panel){
       'Used': '#BF1B00',
       'Free': '#0A437C',
       'Cached': '#58140C',
-      'Out': '#5195CE',
-      'In': '#629E51',
     },
     grid: {max: null, min: 0, leftMin: 0},
     y_formats: ["bytes"],
@@ -274,8 +272,30 @@ function panel_collectd_swap(instance,default_panel){
       { "target": "alias(" + instance + ".swap.swap-free, 'Free')" },
     ]
   };
-
   panels.push( $.extend({}, default_panel, panel_swap_size));
+
+  var panel_swap_io = {
+    title: 'Swap I/O pages on ' + host,
+    type: 'graph',
+    aliasColors: {
+      'Out': '#5195CE',
+      'In': '#629E51',
+    },
+    y_formats: ["bytes"],
+    grid: {max: null, min: 0},
+    seriesOverrides: [
+    {
+      'alias': 'In',
+      'transform': 'negative-Y',
+    },
+    ],
+    'targets': [
+      { "target": "alias(" + instance + ".swap.swap_io-in, 'In')" },
+      { "target": "alias(" + instance + ".swap.swap_io-out, 'Out')" },
+    ]
+  };
+  panels.push( $.extend({}, default_panel, panel_swap_io));
+
   return panels;
 
 }
