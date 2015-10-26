@@ -172,14 +172,14 @@ function panel_collectd_cpu(instance,default_panel){
     percentage: true,
     linewidth: 1,
     targets: [
-      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-user), 'User')"},
-      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-system), 'System')"},
-      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-idle), 'Idle')"},
-      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-wait), 'IO wait')"},
       { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-steal), 'Steal')"},
-      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-nice), 'Nice')"},
       { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-softirq), 'SoftIRQ')"},
       { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-interrupt), 'IRQ')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-system), 'System')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-wait), 'IO wait')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-user), 'User')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-nice), 'Nice')"},
+      { "target": "alias(sumSeries(" + instance + ".cpu-*.cpu-idle), 'Idle')"},
     ]
   };
 
