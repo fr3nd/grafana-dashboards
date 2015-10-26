@@ -202,8 +202,8 @@ function panel_collectd_memory(title,prefix){
 }
 
 
-function panel_collectd_loadavg(title,instance,default_panel){
-  var panel_loadavg = {
+function panel_collectd_load(title,instance,default_panel){
+  var panel_load = {
     title: title,
       type: 'graph',
       y_formats: ["none"],
@@ -221,7 +221,7 @@ function panel_collectd_loadavg(title,instance,default_panel){
       ]
   };
 
-  return [ $.extend({}, default_panel, panel_loadavg) ];
+  return [ $.extend({}, default_panel, panel_load) ];
 
 }
 
@@ -396,7 +396,7 @@ function row_cpu_memory(title,prefix,default_panel){
       panels: [
         panel_collectd_cpu('CPU, %',prefix),
       panel_collectd_memory('Memory',prefix),
-      panel_collectd_loadavg('Load average',prefix,default_panel)
+      panel_collectd_load('Load average',prefix,default_panel)
         ]
   };
 }
@@ -519,7 +519,7 @@ return function(callback) {
       row_generic('Load Average',
         instance,
         default_row,
-        panel_collectd_loadavg('Load average',instance,default_panel))
+        panel_collectd_load('Load average',instance,default_panel))
       );
 
     // custom rows
