@@ -255,7 +255,7 @@ function panel_collectd_load(instance,default_panel){
 
 function panel_collectd_swap(instance,default_panel){
   var panels = [];
-  var swap_panel_size = {
+  var panel_swap_size = {
     title: 'Swap utilization on ' + instance,
     type: 'graph',
     stack: true,
