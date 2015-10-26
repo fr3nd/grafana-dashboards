@@ -339,6 +339,7 @@ function panel_collectd_network_packets(title,prefix,intrf){
 
 function panel_collectd_df(instance,default_panel){
   var vols = expand_filter_values(instance + "df*");
+  var panels = [];
 
   for (var x in vols){
     var name = vols[x].split(".")[1].replace("df-", "");
@@ -359,9 +360,11 @@ function panel_collectd_df(instance,default_panel){
         "Reserved": "#AEA2E0",
       }
     };
+    panels.push( $.extend({}, default_panel, panel_df));
+
   }
 
-  return [ $.extend({}, default_panel, panel_df) ];
+  return panels;
 
 }
 
