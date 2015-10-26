@@ -351,7 +351,7 @@ function panel_collectd_df(instance,default_panel){
       linewidth: 0,
       nullPointMode: "null",
       targets: [
-      { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
+      { "target": "aliasByNode(" + vols[x] + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
       ],
       aliasColors: {
         "Used": "#BF1B00",
