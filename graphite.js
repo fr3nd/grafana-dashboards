@@ -537,7 +537,8 @@ return function(callback) {
       row_generic('Load Average',
         instance,
         default_row,
-        panel_collectd_load('Load average',instance,default_panel))
+        panel_collectd_load('Load average',instance,default_panel)
+      )
     );
 
     // custom rows
