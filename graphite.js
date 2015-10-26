@@ -275,7 +275,7 @@ function panel_collectd_swap(instance,default_panel){
   panels.push( $.extend({}, default_panel, panel_swap_size));
 
   var panel_swap_io = {
-    title: 'Swap I/O pages on ' + host,
+    title: 'Swap I/O pages on ' + instance,
     type: 'graph',
     aliasColors: {
       'Out': '#5195CE',
