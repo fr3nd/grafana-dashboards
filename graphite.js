@@ -183,6 +183,7 @@ function panel_collectd_cpu(instance,default_panel){
     ]
   };
 
+  return [ $.extend({}, default_panel, panel_cpu) ];
 }
 
 function panel_collectd_memory(title,prefix){
