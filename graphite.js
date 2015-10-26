@@ -323,8 +323,8 @@ function panel_collectd_interface(instance,default_panel){
       ],
       y_formats: ["bytes"],
       targets: [
-        { "target": "alias(" + interfaces[x] + ".if_octets-rx, 'Receive')" },
-        { "target": "alias(" + interfaces[x] + ".if_octets-tx, 'Transmit')" },
+        { "target": "alias(" + interfaces[x] + ".if_octets.rx, 'Receive')" },
+        { "target": "alias(" + interfaces[x] + ".if_octets.tx, 'Transmit')" },
       ]
 
     };
