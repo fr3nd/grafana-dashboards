@@ -275,52 +275,8 @@ function panel_collectd_swap(instance,default_panel){
     ]
   };
 
-
   panels.push( $.extend({}, default_panel, panel_swap_size));
 
-}
-
-function panel_collectd_swap_size(title,prefix){
-  var idx = len(prefix);
-  return {
-    title: title,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: 0, leftMin: 0},
-      lines: true,
-      fill: 1,
-      linewidth: 1,
-      stack: true,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(" + prefix + "[[instance]].swap.swap.{free,used,cached}," +(idx+3)+ ")" },
-      ],
-      aliasColors: {
-        "used": "#1F78C1",
-        "cached": "#EAB839",
-        "free": "#508642"
-      }
-  };
-}
-
-function panel_collectd_swap_io(title,prefix){
-  var idx = len(prefix);
-  return {
-    title: title,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: 0},
-      lines: true,
-      fill: 1,
-      linewidth: 2,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(movingMedian(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap_io.in,10),0),'5min')," +(idx+3)+ ")" },
-      { "target": "aliasByNode(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap.io-out,10),0),-1),'5min')," +(idx+3)+ ")" },
-      ]
-  };
 }
 
 function panel_collectd_network_octets(title,prefix,intrf){
