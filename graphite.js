@@ -90,6 +90,24 @@ function get_filter_object(name,query,show_all){
   };
 }
 
+// returns all available collectd plugins for a specific instance
+function get_plugins(instance) {
+  var series = expand_filter_values(instance + ".*");
+
+  var plugin;
+  var plugins = [];
+
+  for (var i = 0; i < series.length; i++) {
+    plugin = series[i].split(".")[0].split("_")[0];
+    if (plugins.indexOf(plugin) == -1) {
+      plugins.push(plugin);
+    }
+  }
+
+  return plugins;
+
+}
+
 // execute graphite-api /metrics/find query
 // return array of metric last names ( func('test.cpu-*') returns ['cpu-0','cpu-1',..] )
 function find_filter_values(query){
@@ -520,7 +538,7 @@ return function(callback) {
         instance,
         default_row,
         panel_collectd_load('Load average',instance,default_panel))
-      );
+    );
 
     // custom rows
     for (var i in optional_rows){
