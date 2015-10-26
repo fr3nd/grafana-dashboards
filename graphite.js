@@ -34,6 +34,12 @@ if(!_.isUndefined(ARGS.datasource_url)) {
   arg_datasource_url = ARGS.datasource_url;
 }
 
+if(!_.isUndefined(ARGS.debug)) {
+  arg_debug = true;
+} else {
+  arg_debug = false;
+}
+
 // return dashboard filter_list
 // optionally include 'All'
 function get_filter_object(name,query,show_all){
