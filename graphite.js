@@ -10,7 +10,7 @@
 
 
 // accessible variables in this scope
-var window, document, ARGS, $, jQuery, moment, kbn;
+var window, document, ARGS, $, jQuery, moment, kbn, default_row, default_panel;
 
 // use defaults for URL arguments
 var arg_i    = '*';
@@ -39,6 +39,34 @@ if(!_.isUndefined(ARGS.debug)) {
 } else {
   arg_debug = false;
 }
+
+var default_row = {
+  'title': '',
+  'showTitle': true,
+  'height': '300px',
+  'collapse': false,
+  'panels': [],
+};
+
+var default_panel = {
+  'title': '',
+  'span': 12,
+  'fill': 8,
+  'linewidth': 1,
+  'interval': '>30s',
+  'legend': {
+    'show': true,
+    'values': true,
+    'min': true,
+    'max': true,
+    'current': true,
+    'total': false,
+    'avg': true,
+    'rightSide': false,
+    'alignAsTable': false,
+  },
+  'targets': [],
+};
 
 // return dashboard filter_list
 // optionally include 'All'
@@ -174,9 +202,9 @@ function panel_collectd_memory(title,prefix){
 }
 
 
-function panel_collectd_loadavg(title,prefix){
+function panel_collectd_loadavg(title,prefix,default_panel){
   var idx = len(prefix);
-  return {
+  var panel_collectd_loadavg = {
     title: title,
       type: 'graph',
       span: arg_span,
@@ -198,6 +226,9 @@ function panel_collectd_loadavg(title,prefix){
       { "target": "alias(" + prefix + "[[instance]].load.load.shortterm, '1 min')" },
       ]
   };
+
+  return [ $.extend({}, default_panel, panel_collectd_loadavg) ];
+
 }
 
 function panel_collectd_swap_size(title,prefix){
@@ -352,7 +383,7 @@ function row_delimiter(title){
 }
 
 
-function row_cpu_memory(title,prefix){
+function row_cpu_memory(title,prefix,default_panel){
   return {
     title: title,
       height: '250px',
@@ -360,7 +391,7 @@ function row_cpu_memory(title,prefix){
       panels: [
         panel_collectd_cpu('CPU, %',prefix),
       panel_collectd_memory('Memory',prefix),
-      panel_collectd_loadavg('Load average',prefix)
+      panel_collectd_loadavg('Load average',prefix,default_panel)
         ]
   };
 }
@@ -483,7 +514,7 @@ return function(callback) {
     // construct dashboard rows
 
     dashboard.rows.push(
-      row_cpu_memory('cpu, memory',prefix),
+      row_cpu_memory('cpu, memory',prefix,default_panel),
       row_swap('swap',prefix),
       row_network('network',prefix,arg_filter),
       row_disk_space('disk space',prefix,arg_filter),
