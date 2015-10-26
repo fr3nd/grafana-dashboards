@@ -10,7 +10,7 @@
 
 
 // accessible variables in this scope
-var window, document, ARGS, $, jQuery, moment, kbn;
+var window, document, ARGS, $, jQuery, moment, kbn, default_panel, default_row;
 
 // use defaults for URL arguments
 var arg_i    = '*';
@@ -188,9 +188,9 @@ function panel_collectd_memory(title,prefix){
 }
 
 
-function panel_collectd_loadavg(title,prefix, default_panel){
+function panel_collectd_loadavg(title, prefix, default_panel){
   var idx = len(prefix);
-  var load_panel = {
+  var loadavg_panel = {
     title: title,
       type: 'graph',
       span: arg_span,
@@ -213,7 +213,8 @@ function panel_collectd_loadavg(title,prefix, default_panel){
       ]
   };
 
-  return [ $.extend({}, default_panel, load_panel) ];
+  return [ $.extend({}, default_panel, loadavg_panel) ];
+
 }
 
 function panel_collectd_swap_size(title,prefix){
@@ -376,7 +377,7 @@ function row_cpu_memory(title,prefix, default_panel){
       panels: [
         panel_collectd_cpu('CPU, %',prefix),
       panel_collectd_memory('Memory',prefix),
-      panel_collectd_loadavg('Load average',prefix, default_panel)
+      panel_collectd_loadavg('Load average',prefix),
         ]
   };
 }
