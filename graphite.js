@@ -227,7 +227,7 @@ function panel_collectd_loadavg(title,prefix,default_panel){
       ]
   };
 
-  return [ $.extend({}, default_panel, panel_loadavg) ];
+  return $.extend({}, default_panel, panel_loadavg);
 
 }
 
