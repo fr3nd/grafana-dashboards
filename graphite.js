@@ -187,28 +187,31 @@ function panel_collectd_cpu(instance,default_panel){
 }
 
 function panel_collectd_memory(title,prefix){
-  var idx = len(prefix);
-  return {
-    title: title,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["bytes"],
-      grid: {max: null, min: 0},
-      lines: true,
-      fill: 1,
-      linewidth: 1,
-      stack: true,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].memory.memory.{used,free,cached,buffered},'15min')," +(idx+4)+ ")" },
-      ],
-      aliasColors: {
-        "free": "#629E51",
-        "used": "#1F78C1",
-        "cached": "#EF843C",
-        "buffered": "#CCA300"
-      }
+  var panel_memory = {
+    title: 'Memory on ' + instance,
+    type: 'graph',
+    aliasColors: {
+      'Free': '#0A437C',
+      'Used': '#BF1B00',
+      'Cached': '#890F02',
+      'Buffered': '#58140C',
+      'slab_recl': '#EF843C',
+      'slab_unrecl': '#F9BA8F',
+    },
+    stack: true,
+    y_formats: ["bytes"],
+    grid: {max: null, min: 0},
+    targets: [
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.free), 'Free')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.used), 'Used')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.cached), 'Cached')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.buffered), 'Buffered')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.slab_recl), 'slab_recl')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory.slab_unrecl), 'slab_unrecl')"},
+    ]
+
   };
+  return [ $.extend({}, default_panel, panel_cpu) ];
 }
 
 function panel_collectd_other(title){
@@ -484,6 +487,9 @@ return function(callback) {
           break;
         case 'cpu':
           row.panels = panel_collectd_cpu(instance,default_panel);
+          break;
+        case 'memory':
+          row.panels = panel_collectd_memory(instance,default_panel);
           break;
         default:
           row.collapse = true;
