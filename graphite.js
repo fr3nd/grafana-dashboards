@@ -211,7 +211,7 @@ function panel_collectd_memory(instance,default_panel){
     ]
 
   };
-  return [ $.extend({}, default_panel, panel_cpu) ];
+  return [ $.extend({}, default_panel, panel_memory) ];
 }
 
 function panel_collectd_other(title){
