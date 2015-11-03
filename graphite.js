@@ -202,12 +202,12 @@ function panel_collectd_memory(instance,default_panel){
     y_formats: ["bytes"],
     grid: {max: null, min: 0},
     targets: [
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.free), 'Free')"},
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.used), 'Used')"},
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.cached), 'Cached')"},
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.buffered), 'Buffered')"},
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.slab_recl), 'slab_recl')"},
-      { "target": "alias(sumSeries(" + instance + ".memory.memory.slab_unrecl), 'slab_unrecl')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-free), 'Free')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-used), 'Used')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-cached), 'Cached')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-buffered), 'Buffered')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-slab_recl), 'slab_recl')"},
+      { "target": "alias(sumSeries(" + instance + ".memory.memory-slab_unrecl), 'slab_unrecl')"},
     ]
 
   };
