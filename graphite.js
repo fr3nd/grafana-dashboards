@@ -224,7 +224,7 @@ function panel_collectd_other(title){
 
 function panel_collectd_load(instance,default_panel){
   var panel_load = {
-    title: "Load Average",
+    title: 'Load Average on ' + instance,
       type: 'graph',
       y_formats: ["none"],
       grid: { max: null, min: 0 },
