@@ -436,38 +436,44 @@ return function(callback) {
   })
   .done(function(result) {
 
-    plugins = get_plugins(instance);
-    if (arg_debug) {
-      console.log("Plugins:" + plugins);
-    }
-    for (var x in plugins){
-      var row = JSON.parse(JSON.stringify(default_row));
-      row.title = plugins[x];
-      switch (plugins[x]) {
-        case 'load':
-          row.panels = panel_collectd_load(instance,default_panel);
-          break;
-        case 'df':
-          row.panels = panel_collectd_df(instance,default_panel);
-          break;
-        case 'swap':
-          row.panels = panel_collectd_swap(instance,default_panel);
-          break;
-        case 'interface':
-          row.panels = panel_collectd_interface(instance,default_panel);
-          break;
-        case 'cpu':
-          row.panels = panel_collectd_cpu(instance,default_panel);
-          break;
-        case 'memory':
-          row.panels = panel_collectd_memory(instance,default_panel);
-          break;
-        default:
-          row.collapse = true;
-          row.panels = panel_collectd_other(plugins[x]);
-          break;
+    if (instance) {
+      plugins = get_plugins(instance);
+      if (arg_debug) {
+        console.log("Plugins:" + plugins);
       }
-      dashboard.rows.push(row);
+      for (var x in plugins){
+        var row = JSON.parse(JSON.stringify(default_row));
+        row.title = plugins[x];
+        switch (plugins[x]) {
+          case 'load':
+            row.panels = panel_collectd_load(instance,default_panel);
+            break;
+          case 'df':
+            row.panels = panel_collectd_df(instance,default_panel);
+            break;
+          case 'swap':
+            row.panels = panel_collectd_swap(instance,default_panel);
+            break;
+          case 'interface':
+            row.panels = panel_collectd_interface(instance,default_panel);
+            break;
+          case 'cpu':
+            row.panels = panel_collectd_cpu(instance,default_panel);
+            break;
+          case 'memory':
+            row.panels = panel_collectd_memory(instance,default_panel);
+            break;
+          default:
+            row.collapse = true;
+            row.panels = panel_collectd_other(plugins[x]);
+            break;
+        }
+        dashboard.rows.push(row);
+      }
+    } else {
+      if (arg_debug) {
+        console.log("No instance specified. Showing menu.");
+      }
     }
 
     // when dashboard is composed call the callback
