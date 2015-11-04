@@ -436,7 +436,7 @@ return function(callback) {
   })
   .done(function(result) {
 
-    if (instance) {
+    if (instance != '*') {
       plugins = get_plugins(instance);
       if (arg_debug) {
         console.log("Plugins:" + plugins);
