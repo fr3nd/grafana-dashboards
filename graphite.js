@@ -219,7 +219,7 @@ function panel_collectd_other(title){
       title: title,
       type: 'text',
       span: 12,
-      content: 'This CollectD plugin has not a panel yet',
+      content: 'This CollectD plugin has no panel yet',
   };
 
   return [ panel_other ];
