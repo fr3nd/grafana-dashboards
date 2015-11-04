@@ -483,6 +483,7 @@ return function(callback) {
         span: 12,
         content: 'Index',
       } ];
+      dashboard.rows.push(row);
     }
 
     // when dashboard is composed call the callback
