@@ -477,11 +477,18 @@ return function(callback) {
       }
       row = JSON.parse(JSON.stringify(default_row));
       row.title = "Graphite index";
+
+      var instances = expand_filter_values(instance);
+      var text = "# List of instances\n\n";
+      for (var i in instances){
+        text = text + "* [" + instances[i] + "](?i=" + instances[i] + ")\n";
+      }
+
       row.panels = [ {
         title: "Graphite index",
         type: 'text',
         span: 12,
-        content: 'Index',
+        content: text,
       } ];
       dashboard.rows.push(row);
     }
