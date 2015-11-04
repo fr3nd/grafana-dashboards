@@ -16,7 +16,7 @@ var window, document, ARGS, $, jQuery, moment, kbn, default_row, default_panel;
 var arg_i    = '*';
 var arg_span = 4;
 var arg_from = '24h';
-var arg_datasource_url = '/api/datasources/proxy/2';
+var arg_datasource_url = '/api/datasources/proxy/1';
 
 if(!_.isUndefined(ARGS.span)) {
   arg_span = ARGS.span;
@@ -484,7 +484,7 @@ return function(callback) {
                  '  <div class="dashlist">\n';
       for (var i in instances){
         text = text + '    <div class="dashlist-item">\n' +
-                      '      <a class="dashlist-link" target=_blank href="/dashboard/script/graphite.js?i=' + instances[i] + '">' + instances[i] + '</a>\n' +
+                      '      <a class="dashlist-link" target=_blank href="/dashboard/script/graphite.js?i=' + instances[i] + '&datasource_url=' + arg_datasource_url + '">' + instances[i] + '</a>\n' +
                       '    </div>\n';
       }
       text = text + '  </div>\n' +
