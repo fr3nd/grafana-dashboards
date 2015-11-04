@@ -15,7 +15,7 @@ var window, document, ARGS, $, jQuery, moment, kbn, default_row, default_panel;
 // use defaults for URL arguments
 var arg_i    = '*';
 var arg_span = 4;
-var arg_from = 'now-24h';
+var arg_from = '24h';
 var arg_datasource_url = '/api/datasources/proxy/2';
 
 if(!_.isUndefined(ARGS.span)) {
