@@ -479,14 +479,21 @@ return function(callback) {
       row.title = "Graphite index";
 
       var instances = expand_filter_values(instance);
-      var text = "# List of instances\n\n";
+      var text = '<h1>List of instances</h1>\n'+
+                 '<div class="panel-content">\n' +
+                 '  <div class="dashlist">\n';
       for (var i in instances){
-        text = text + "* [" + instances[i].replace(/_/g, '\\_') + "](/dashboard/script/graphite.js?i=" + instances[i] + ")\n";
+        text = text + '    <div class="dashlist-item">\n' +
+                      '      <a class="dashlist-link" href="/dashboard/script/graphite.js?i=' + instances[i] + '">' + instances[i] + '</a>\n' +
+                      '    </div>\n';
       }
+      text = text + '  </div>\n' +
+                    '</div>\n';
 
       row.panels = [ {
         title: "Graphite index",
         type: 'text',
+        mode: 'html',
         span: 12,
         content: text,
       } ];
