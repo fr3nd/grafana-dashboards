@@ -364,6 +364,7 @@ function panel_collectd_df(instance,default_panel){
 }
 
 function panel_collectd_disk(title,prefix,vol){
+  // TODO
   vol = (typeof vol === "undefined") ? 'sda' : vol;
   var idx = len(prefix);
   return {
@@ -386,36 +387,6 @@ function panel_collectd_disk(title,prefix,vol){
       }
   };
 }
-
-
-function row_delimiter(title){
-  return {
-    title: "_____ " + title,
-    height: "20px",
-    collapse: false,
-    editable: false,
-    collapsable: false,
-    panels: [{
-      title: title,
-      editable: false,
-      span: 12,
-      type: "text",
-      mode: "text"
-    }]
-  };
-}
-
-function row_generic(title,instance,default_row,panels){
-
-  var generic_row = {
-    title: title,
-    panels: panels,
-  };
-
-  return $.extend({}, default_row, generic_row);
-
-}
-
 
 return function(callback) {
 
