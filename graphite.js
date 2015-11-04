@@ -435,6 +435,7 @@ return function(callback) {
     url: '/'
   })
   .done(function(result) {
+    var row;
 
     if (instance != '*') {
       plugins = get_plugins(instance);
@@ -442,7 +443,7 @@ return function(callback) {
         console.log("Plugins:" + plugins);
       }
       for (var x in plugins){
-        var row = JSON.parse(JSON.stringify(default_row));
+        row = JSON.parse(JSON.stringify(default_row));
         row.title = plugins[x];
         switch (plugins[x]) {
           case 'load':
@@ -474,6 +475,14 @@ return function(callback) {
       if (arg_debug) {
         console.log("No instance specified. Showing menu.");
       }
+      row = JSON.parse(JSON.stringify(default_row));
+      row.title = "Graphite index";
+      row.panels = [ {
+        title: "Graphite index",
+        type: 'text',
+        span: 12,
+        content: 'Index',
+      } ];
     }
 
     // when dashboard is composed call the callback
