@@ -481,7 +481,7 @@ return function(callback) {
       var instances = expand_filter_values(instance);
       var text = "# List of instances\n\n";
       for (var i in instances){
-        text = text + "* [" + instances[i].replace('_', '__') + "](/dashboard/script/graphite.js?i=" + instances[i] + ")\n";
+        text = text + "* [" + instances[i].replace(/_/g, '__') + "](/dashboard/script/graphite.js?i=" + instances[i] + ")\n";
       }
 
       row.panels = [ {
