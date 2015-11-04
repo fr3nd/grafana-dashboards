@@ -159,7 +159,7 @@ function panel_collectd_cpu(instance,default_panel){
     title: 'CPU usage on ' + instance,
     type: 'graph',
     aliasColors: {
-      'Idle': '#202020',
+      'Idle': '#052B51',
       'SoftIRQ': '#EAB839',
       'IRQ': '#E5AC0E',
       'User': '#BA43A9',
