@@ -385,8 +385,8 @@ function panel_collectd_disk(instance,default_panel){
       { "target": "alias(" + disks[x] + ".disk_ops.write, 'Write')" },
       ],
       aliasColors: {
-        "Read": "#0A437C",
-        "Write": "#629E51"
+        "Read": "#C15C17",
+        "Write": "#F2C96D"
       }
     };
     panels.push( $.extend({}, default_panel, panel_disk_ops));
