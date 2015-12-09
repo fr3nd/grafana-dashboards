@@ -363,6 +363,40 @@ function panel_collectd_df(instance,default_panel){
 
 }
 
+function panel_collectd_disk(instance,default_panel){
+  var disks = expand_filter_values(instance + ".disk*");
+  var panels = [];
+
+  for (var x in disks){
+    var name = disks[x].split(".")[1].replace("disk-", "");
+    var panel_io_time = {
+      title: "Disk operations (" + name + ") on " + instance,
+      type: 'graph',
+      y_formats: ["none"],
+      grid: {max: null, min: null},
+      seriesOverrides: [
+        {
+          alias: 'Written',
+          transform: 'negative-Y',
+        },
+      ],
+      targets: [
+      { "target": "alias(" + disks[x] + ".disk_ops.read, 'Read')" },
+      { "target": "alias(" + disks[x] + ".disk_ops.write, 'Write')" },
+      ],
+      aliasColors: {
+        "Read": "#0A437C",
+        "Write": "#629E51"
+      }
+    };
+    panels.push( $.extend({}, default_panel, panel_df));
+
+  }
+
+  return panels;
+
+}
+
 function panel_collectd_disk(title,prefix,vol){
   // TODO
   vol = (typeof vol === "undefined") ? 'sda' : vol;
@@ -451,6 +485,9 @@ return function(callback) {
             break;
           case 'df':
             row.panels = panel_collectd_df(instance,default_panel);
+            break;
+          case 'disk':
+            row.panels = panel_collectd_disk(instance,default_panel);
             break;
           case 'swap':
             row.panels = panel_collectd_swap(instance,default_panel);
