@@ -369,7 +369,7 @@ function panel_collectd_disk(instance,default_panel){
 
   for (var x in disks){
     var name = disks[x].split(".")[1].replace("disk-", "");
-    var panel_io_time = {
+    var panel_disk_ops = {
       title: "Disk operations (" + name + ") on " + instance,
       type: 'graph',
       y_formats: ["none"],
@@ -389,7 +389,7 @@ function panel_collectd_disk(instance,default_panel){
         "Write": "#629E51"
       }
     };
-    panels.push( $.extend({}, default_panel, panel_df));
+    panels.push( $.extend({}, default_panel, panel_disk_ops));
 
   }
 
