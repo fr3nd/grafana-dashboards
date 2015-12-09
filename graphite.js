@@ -376,7 +376,7 @@ function panel_collectd_disk(instance,default_panel){
       grid: {max: null, min: null},
       seriesOverrides: [
         {
-          alias: 'Written',
+          alias: 'Write',
           transform: 'negative-Y',
         },
       ],
