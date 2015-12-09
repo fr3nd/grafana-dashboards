@@ -397,31 +397,6 @@ function panel_collectd_disk(instance,default_panel){
 
 }
 
-function panel_collectd_disk(title,prefix,vol){
-  // TODO
-  vol = (typeof vol === "undefined") ? 'sda' : vol;
-  var idx = len(prefix);
-  return {
-    title: title + ', ' + vol,
-      type: 'graphite',
-      span: arg_span,
-      y_formats: ["none"],
-      grid: {max: null, min: null},
-      lines: true,
-      fill: 1,
-      linewidth: 2,
-      nullPointMode: "null",
-      targets: [
-      { "target": "aliasByNode(nonNegativeDerivative(" + prefix + "[[instance]].disk." + vol + ".disk_ops.write,10)," +(idx+2)+ "," +(idx+4)+ ")" },
-      { "target": "aliasByNode(scale(nonNegativeDerivative(" + prefix + "[[instance]].disk." + vol + ".disk_ops.read,10),-1)," +(idx+2)+ "," +(idx+4)+ ")" }
-    ],
-      aliasColors: {
-        "write": "#447EBC",
-        "read": "#508642",
-      }
-  };
-}
-
 return function(callback) {
 
   // Setup some variables
