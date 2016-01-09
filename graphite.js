@@ -409,8 +409,8 @@ function panel_collectd_mysql(instance,default_panel){
     },
     grid: {max: null, min: 0, leftMin: 0},
     targets: [
-      { "target": "alias(" + instance + "mysql-MySQL.threads-connected, 'Connected')" },
-      { "target": "alias(" + instance + "mysql-MySQL.threads-running, 'Running')" },
+      { "target": "alias(" + instance + ".mysql-MySQL.threads-connected, 'Connected')" },
+      { "target": "alias(" + instance + ".mysql-MySQL.threads-running, 'Running')" },
     ]
   };
   panels.push( $.extend({}, default_panel, panel_mysql_thread));
