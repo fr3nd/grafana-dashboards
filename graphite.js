@@ -429,7 +429,7 @@ function panel_collectd_mysql(instance,default_panel){
       { "target": "alias(" + instance + ".mysql-MySQL.cache_size-qcache, 'Queries in cache')" },
     ]
   };
-  panels.push( $.extend({}, default_panel, panel_mysql_thread));
+  panels.push( $.extend({}, default_panel, panel_mysql_cache_size));
 
   return panels;
 
