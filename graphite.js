@@ -415,6 +415,22 @@ function panel_collectd_mysql(instance,default_panel){
   };
   panels.push( $.extend({}, default_panel, panel_mysql_thread));
 
+  var panel_mysql_cache_size = {
+    title: 'MySQL Query Cache size in ' + instance,
+    type: 'graph',
+    stack: false,
+    linewidth: 2,
+    fill: 0,
+    aliasColors: {
+      'Queries in cache': '#447EBC',
+    },
+    grid: {max: null, min: 0, leftMin: 0},
+    targets: [
+      { "target": "alias(" + instance + ".mysql-MySQL.cache_size-qcache, 'Queries in cache')" },
+    ]
+  };
+  panels.push( $.extend({}, default_panel, panel_mysql_thread));
+
   return panels;
 
 }
