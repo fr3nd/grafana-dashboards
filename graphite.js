@@ -397,6 +397,30 @@ function panel_collectd_disk(instance,default_panel){
 
 }
 
+function panel_collectd_mysql(instance,default_panel){
+  var panels = [];
+  var panel_mysql_thread = {
+    title: 'MySQL Thread statistics in ' + instance,
+    type: 'graph',
+    stack: false,
+    aliasColors: {
+      'Connected': '#E5AC0E',
+      'Running': '#0A50A1',
+    },
+    grid: {max: null, min: 0, leftMin: 0},
+    targets: [
+      { "target": "alias(" + instance + "mysql-MySQL.threads-connected, 'Connected')" },
+      { "target": "alias(" + instance + "mysql-MySQL.threads-running, 'Running')" },
+    ]
+  };
+  panels.push( $.extend({}, default_panel, panel_mysql_thread));
+
+  return panels;
+
+}
+
+
+
 return function(callback) {
 
   // Setup some variables
@@ -476,6 +500,10 @@ return function(callback) {
           case 'memory':
             row.panels = panel_collectd_memory(instance,default_panel);
             break;
+          case 'mysql':
+            row.panels = panel_collectd_mysql(instance,default_panel);
+            break;
+
           default:
             row.collapse = true;
             row.panels = panel_collectd_other(plugins[x]);
