@@ -540,7 +540,7 @@ return function(callback) {
                  '  <div class="dashlist">\n';
       for (var i in instances){
         text = text + '    <div class="dashlist-item">\n' +
-                      '      <a class="dashlist-link" href="/dashboard/script/graphite.js?i=' + instances[i] + '&datasource_url=' + arg_datasource_url + '">' + instances[i] + '</a>\n' +
+                      '      <a class="dashlist-link" target=_blank href="/dashboard/script/graphite.js?i=' + instances[i] + '&datasource_url=' + arg_datasource_url + '">' + instances[i] + '</a>\n' +
                       '    </div>\n';
       }
       text = text + '  </div>\n' +
